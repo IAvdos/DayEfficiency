@@ -58,11 +58,20 @@ namespace DayEfficiency
             
         }
 
-        //TODO
-        /* private void ConvertCellAddress(string cellAddress)
-         {
+        
+        private static void ConvertCellAddress(string cellAddress)
+        {
+            int _lettersInAlphabet = 26;
 
-         }*/
+        }
+        private static int ConvertRowLatterToItn(string columnLatter) 
+        {
+        }
+
+        private static int GetNumberOfLatter(char latter)
+        {
+            return (int)latter - (char)latter + 1;
+        }
 
 
     }
