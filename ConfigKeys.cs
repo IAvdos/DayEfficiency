@@ -11,6 +11,7 @@ namespace DayEfficiency
         source_file,
         destination_file,
         cell_name,
-        last_processed_date
+        last_processed_date,
+        processed_time
     }
 }

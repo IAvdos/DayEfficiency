@@ -12,7 +12,8 @@ namespace DayEfficiency
     {
         private FileInfo _sourseExcel = new FileInfo(ConfigData.SourceFile);
         private double _cellValue = 0;
-        private string _cellAddress = ConfigData.CellAddress;
+        private int _cellColumnNumber = ConfigData.CellColumnNumber - 1;
+        private int _cellRowNumber = ConfigData.CellRowNumber - 1;
 
         public double CellValue { get { return _cellValue; } }
 
@@ -26,9 +27,10 @@ namespace DayEfficiency
 
                 
                 var rows = worksheet.Rows.ToArray();
-
-                var cell = rows[17].Cells.ToArray()[2];
-                Console.WriteLine(cell);
+                
+                var cell = rows[_cellRowNumber].Cells.ToArray()[_cellColumnNumber];
+                _cellValue =  Double.Parse(cell.Value.ToString().Substring(0,5));
+                Console.WriteLine(_cellValue);
             }
             return 0;
         }
