@@ -17,9 +17,11 @@ namespace DayEfficiency
 
         public double CellValue { get { return _cellValue; } }
 
+        
+        
         public double GetCellValue()
         {
-
+            
             using(FastExcel.FastExcel excel = new FastExcel.FastExcel(_sourseExcel, true))
             {
                 var worksheet = excel.Read(1);
@@ -29,9 +31,17 @@ namespace DayEfficiency
                 var rows = worksheet.Rows.ToArray();
                 
                 var cell = rows[_cellRowNumber].Cells.ToArray()[_cellColumnNumber];
-                _cellValue =  Double.Parse(cell.Value.ToString().Substring(0,5));
+                _cellValue =  Double.Parse(cell.Value.ToString().Substring(0,5).Replace('.',','));
                 Console.WriteLine(_cellValue);
             }
+
+            /*
+            using(FileStream stream = new FileStream(_sourseExcel.FullName, FileMode.Open, FileAccess.ReadWrite))
+            {
+                Console.WriteLine(stream.CanWrite);
+                Console.WriteLine(_sourseExcel.LastWriteTime);
+
+            }*/
             return 0;
         }
         
