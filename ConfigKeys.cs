@@ -12,6 +12,7 @@ namespace DayEfficiency
         destination_file,
         cell_name,
         last_processed_date,
-        processed_time
+        processed_time,
+        last_cell_value
     }
 }
