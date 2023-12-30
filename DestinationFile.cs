@@ -13,9 +13,14 @@ namespace DayEfficiency
         
         public DestinationFile(string filePaht)
         {
-            if(File.Exists(filePaht)) _filePaht = filePaht;
-            else Console.WriteLine("Путь к файлу для записи, неверен. Измените путь и перезапустите приложение.");
-            FileInfo file = new FileInfo(filePaht);
+            if (File.Exists(filePaht))
+            {
+                _filePaht = filePaht;
+            }
+            else
+            {
+                Console.WriteLine("Путь к файлу для записи, неверен. Измените путь и перезапустите приложение.");
+            }           
         }
 
 

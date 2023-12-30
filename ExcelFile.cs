@@ -18,11 +18,17 @@ namespace DayEfficiency
 
         public ExcelFile(string filePaht)
         {
-            if (File.Exists(filePaht)) _sourseExcel = new FileInfo(filePaht);
-            else Console.WriteLine("Путь к файлу с данными, неверен. Измените путь и перезапустите приложение.");
+            if (File.Exists(filePaht))
+            {
+                _sourseExcel = new FileInfo(filePaht);
+            }
+            else
+            {
+                Console.WriteLine("Путь к файлу с данными, неверен. Измените путь и перезапустите приложение.");
+            }
         }        
 
-        public DateTime GetLastUpdeteDate() { return _sourseExcel.LastWriteTime; }
+        public DateTime GetLastUpdateDate() { return _sourseExcel.LastWriteTime; }
         
         public double GetCellValue(string cellAddress)
         {
@@ -55,9 +61,9 @@ namespace DayEfficiency
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Файл с данными занят. Закройте файл и перезапустите приложение.");
-                return false;
+                Console.WriteLine("Файл с данными занят. Закройте файл и перезапустите приложение.");                
             }
+            return false;
         }
         private void ConvertCellAddress(string cellAddress)
         {

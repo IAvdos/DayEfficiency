@@ -8,70 +8,87 @@ using System.Threading.Tasks;
 namespace DayEfficiency
 {
     internal class Presenter
-    {
-        private double _currentDayEfficiency = 0;
+    {        
         private ExcelFile _excelFile = null;
         private DestinationFile _txtFile = null;
         private TextGenerator _textGenerator = null;
-        private DateTime _currentDate = DateTime.Now;
-        private DateTime _lastExecutingDate = ConfigData.LastProcessedDate;
-        private DateTime _sourceFileUpdatingDate;
-
-        public Presenter() 
+        private DataInfo _dataInfo = null;        
+        
+        public Presenter()
         {
             _excelFile = new ExcelFile(ConfigData.SourceFile);
-            _txtFile = new DestinationFile(ConfigData.DestinationFile);   
-            _sourceFileUpdatingDate = _excelFile.GetLastUpdeteDate();
-            _excelFile.GetCellValue(ConfigKeys.source_file.ToString());
-            _currentDayEfficiency = _excelFile.CellValue - ConfigData.LastCellValue;
+            _txtFile = new DestinationFile(ConfigData.DestinationFile);
+            _dataInfo = new DataInfoGenerator().CreateDataInfo();
+            _textGenerator = new TextGenerator();            
         }
-        public string ReadStatus()
+        public bool DefineAndExecuteStrategy()
         {
-            if(_currentDate.Hour > 4)
-                //ghbljf
-
-
-            if (ConfigData.LastProcessedDate == new DateTime(2023, 01, 01))
-                return "First executing";
-            else if ((_currentDate.Day - _lastExecutingDate.Day) == 1 && (_currentDate.Day != 1))
-                return "Regular executing";
-            else if ((_currentDate.Subtract(_lastExecutingDate).Days == 1))
-                return "Regular new month executing";
-            else if (( _currentDate.Day - _lastExecutingDate.Day) > 1)
-                return "Executing with free days";
-            else if ((_currentDate.Day - _lastExecutingDate.Day) < 0)
-                return "Executing with free days and new month";
-            return "Somthing wrong";
+            //if()
+            if (_dataInfo.LastUpdateDate == new DateTime(2023, 01, 01) && _dataInfo.LastMonthEfficiency == 0)
+            {
+                ExecuteFirstLounchStrategy();
+                return true;
+            }
+            else if (_dataInfo.LastUpdateDate.Month == _dataInfo.CurentDate.Month)
+            {
+                ExecuteActualMonthStrategy();
+                return true;
+            }
+            else if (_dataInfo.LastUpdateDate.Month < _dataInfo.CurentDate.Month)
+            {
+                if (_dataInfo.LastUpdateDate.Day != DateTime.DaysInMonth(_dataInfo.LastUpdateDate.Year, _dataInfo.LastUpdateDate.Month))
+                {
+                    ExecuteNewMonthWithRecordInLastStrategy();
+                    return true;
+                }
+                else
+                {
+                    ExecuteNewMonthStrategy();
+                    return true;
+                }                
+            }
+            else
+                { return false; }
         }
-
-        public void ProduceFirstTime()
+            private void UpdeteConfig(DateTime currentDate, double currentEfficiency)
+            {
+                ConfigData.UpdateConfig(ConfigKeys.lastProcessedDate, currentDate.ToString());
+                ConfigData.UpdateConfig(ConfigKeys.lastCellValue, currentEfficiency.ToString());
+            }
+            private void ExecuteFirstLounchStrategy()
         {
-            UpdateConfiguration();          
+			Console.WriteLine("It's firs program lounch.");
+			_txtFile.WriteRecord(_textGenerator.BuildFirstRecord(0, _dataInfo.CurentDate.Day));
+			UpdeteConfig(_dataInfo.CurentDate, _dataInfo.CurrentMonthEfficiency);
+		}
+            private void ExecuteActualMonthStrategy()
+            {
+                UpdeteConfig(_dataInfo.CurentDate, _dataInfo.CurrentMonthEfficiency);
+                int freeDays = _dataInfo.CurentDate.Day - _dataInfo.LastUpdateDate.Day - 1;
+                _txtFile.WriteRecord(_textGenerator.BuildRecord(_dataInfo.CurrentEfficiency, freeDays, false));
+                UpdeteConfig(_dataInfo.CurentDate, _dataInfo.CurrentEfficiency);
+            }
+            private void ExecuteNewMonthWithRecordInLastStrategy()
+            {
+                int freeDaysInLastMonth = DateTime.DaysInMonth(_dataInfo.LastUpdateDate.Year, _dataInfo.LastUpdateDate.Month) - _dataInfo.LastUpdateDate.Day;
 
-            Console.WriteLine("Первый запуск приложения, успешно произведен.");
+                _txtFile.WriteRecord(_textGenerator.BuildWhiteSpaceRecord(freeDaysInLastMonth));
+                ExecuteNewMonthStrategy();
+            }
+            private void ExecuteNewMonthStrategy()
+            {
+			    if(_dataInfo.CurentDate.Day != 1)
+                {
+                    int freeDaysInNewMonth = _dataInfo.CurentDate.Day - 1;
+                    _txtFile.WriteRecord(_textGenerator.BuildWhiteSpaceInNewMonthLine(freeDaysInNewMonth));
+				    _txtFile.WriteRecord(_textGenerator.BuildRecord(_dataInfo.CurrentMonthEfficiency, 0, false));
+			    }
+                else 
+                {
+                    _txtFile.WriteRecord(_textGenerator.BuildRecord(_dataInfo.CurrentMonthEfficiency, 0, true));
+                }
+                UpdeteConfig(_dataInfo.CurentDate, _dataInfo.CurrentMonthEfficiency);
+            }
         }
-        private void Regular()
-        {
-            _txtFile.WriteRecord(_textGenerator.BuildRecord(_currentDayEfficiency, 0, false));
-            UpdateConfiguration();
-        }
-
-        private void RegularNewMonth()
-        {
-            _txtFile.WriteRecord(_textGenerator.BuildRecord(_currentDayEfficiency, 0, true));
-            UpdateConfiguration();
-        }
-
-        private void NewMonthWithFreeDays() 
-        {
-            _txtFile.WriteRecord(_textGenerator.BuildRecord(_currentDayEfficiency))
-        }
-
-        private void UpdateConfiguration()
-        {
-            ConfigData.UpdateConfig(ConfigKeys.last_processed_date, _currentDate.ToString());
-            ConfigData.UpdateConfig(ConfigKeys.last_cell_value, _currentDayEfficiency.ToString());
-        }
-
-    }
-}
+		
+	}
