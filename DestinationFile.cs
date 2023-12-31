@@ -20,20 +20,24 @@ namespace DayEfficiency
             else
             {
                 Console.WriteLine("Путь к файлу для записи, неверен. Измените путь и перезапустите приложение.");
-            }           
+            }
         }
 
 
         public void WriteRecord(string value)
         {
-            IsFileFree();
-            using (var writer = new StreamWriter(_filePaht, true))
+            if (IsFileFree())
             {
-                writer.Write(value);
+                using (var writer = new StreamWriter(_filePaht, true))
+                {
+                    writer.Write(value);
+                }
             }
-
+            else
+            {
+                Console.WriteLine("Destination file busy.");
+            }
         }
-        //не факт что отслеживает открытые текстовые файлы
         private bool IsFileFree()
         {
             try

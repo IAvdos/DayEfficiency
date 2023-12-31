@@ -12,7 +12,7 @@ namespace DayEfficiency
     internal static class ConfigData
     {        
         public static string SourceFile { get; private set; } = @"C:\Users\Public\Documents\balance_debug.xlsx";
-        public static string DestinationFile { get; private set; } = @"C:\Users\Public\Documents\DayEfficiency.txt";
+        public static string DestinationFile { get; private set; } = @"C:\Users\Avdos\source\repos\DayEfficiency\DayEfficiency.txt";
         public static string CellAddress { get; private set; } = "C18";       
         public static DateTime LastProcessedDate { get; private set; } = new DateTime(2023, 01, 01, 00, 00, 00);
         public static TimeOnly ProcessedTime { get; private set; } = new TimeOnly(05, 00);

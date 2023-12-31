@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,7 +14,7 @@ namespace DayEfficiency
         public double CurrentMonthEfficiency { get; set; }
         public DateTime LastUpdateDate { get; set; }
         public DateTime CurentDate { get; set; }        
-
-
+        public TimeOnly ProcessedTime { get; set; }
+        public DateTime LastWriteDateSourceFile { get; set; }
     }
 }

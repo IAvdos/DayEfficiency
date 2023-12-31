@@ -46,9 +46,14 @@ namespace DayEfficiency
                     _cellValue = Double.Parse(cell.Value.ToString().Replace('.', ','));
                     _cellValue = Math.Round(_cellValue, 2);
                 }
+                return _cellValue;
             }
-           
-            return _cellValue;
+            else
+            {
+                Console.WriteLine("Source file busy. Please close it, and restart program.");
+                return -1;
+            }
+            
         }
 
         private bool IsFileFree()

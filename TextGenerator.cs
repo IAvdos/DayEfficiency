@@ -11,18 +11,24 @@ namespace DayEfficiency
         public string BuildRecord(double hours, int freeDays, bool isNewMonth)
         {
             var record = new StringBuilder();
-            if (isNewMonth) record.Append(BuildNewMonthLine());
+            if (isNewMonth)
+            {
+                record.Append(BuildNewMonthLine());
+            }
             record.Append("\t");
-            record.Append(String.Format("{0:00.00}", hours));            
-            record.Append(GetWhiteSpace(freeDays));                        
+            record.Append(String.Format("{0:0.00}", hours));  
+            if(freeDays > 0)
+            {
+                record.Append("\t");
+            }
+            record.Append(GetWhiteSpace(freeDays));
 
             return record.ToString();
         }
         public string BuildWhiteSpaceRecord(int freeDays) 
         {
             StringBuilder record = new StringBuilder();
-            record.Append(BuildNewMonthLine());
-            record.Append("\t");            
+            record.Append("\t");
             record.Append(GetWhiteSpace(freeDays));
 
             return record.ToString();
@@ -30,10 +36,9 @@ namespace DayEfficiency
         public string BuildWhiteSpaceInNewMonthLine(int freeDays)
         {
             StringBuilder record = new StringBuilder();
-            record.Append("\n");
-			record.Append(BuildNewMonthLine());			
-            record.Append(GetWhiteSpace(freeDays));
+            record.Append(BuildNewMonthLine());
             record.Append("\t");
+            record.Append(GetWhiteSpace(freeDays));
             return record.ToString();
         }
         public string BuildFirstRecord(double hours, int startDay)
@@ -43,52 +48,52 @@ namespace DayEfficiency
             record.Append(BuildNewMonthLine());
             record.Append(GetWhiteSpace(startDay - 1));
             record.Append("\t");
-            record.Append(String.Format("{0:000.00}", hours));            
+            record.Append(String.Format("{0:0.00}", hours));
 
             return record.ToString();
         }
         
         private string BuildNewMonthLine()
         {
-            const int _recordLength = 10;          
-            string date = DateTime.Now.Date.ToString("yyyy MM");
+
+            string date = DateTime.Now.Date.ToString("yyyy\tMM");
           
-            return  "\n" + date + new String(' ', _recordLength - date.Length);            
+            return  "\n" + date;
         }
 
         private string BuildHeadLine()
         {
             const int _dayInMonth = 31;
-            const int _leftSidePadding = 12;
-            string _whiteSpase = new String('+', 8);
-            string _whiteSpaseSmall = new String('+', 7);
-            StringBuilder head = new StringBuilder(new string(' ', _leftSidePadding));
+            const string _title = "year\tmonth\t";
+            StringBuilder head = new StringBuilder(_title);
 
-            for(int i = 1; i <= _dayInMonth; i++)
-            {               
+            for (int i = 1; i <= _dayInMonth; i++)
+            {
+                if (i == _dayInMonth)
+                {
                     head.Append(i);
-                    if(i < 10)
-                        head.Append(_whiteSpase);
-                    else 
-                        head.Append(_whiteSpaseSmall);
-                if (i == _dayInMonth) head.Append("\n");             
-                
+                }
+                else
+                { 
+                head.Append(i + "\t");
+                }
             }
-
             return head.ToString();
         }
 
         private string GetWhiteSpace(int days)
         {
-            string _zeroHours = "000,00";
+            string _zeroHours = "0,00";
             StringBuilder _whiteSpace = new StringBuilder();
             for(int i = 1; i <= days; i++)
             {
-                    _whiteSpace.Append(_zeroHours);
-                    if (i != days)
-                        _whiteSpace.Append("\t");             
+                _whiteSpace.Append(_zeroHours);
+                if (i != days)
+                {
+                    _whiteSpace.Append("\t"); 
+                }
+                                    
             }
-
             return _whiteSpace.ToString();
         }
 
