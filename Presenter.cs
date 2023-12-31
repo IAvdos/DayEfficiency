@@ -27,7 +27,7 @@ namespace DayEfficiency
         }
         public bool IsSourseFileChenged()
         {
-            if(_dataInfo.LastWriteDateSourceFile == _dataInfo.LastUpdateDate)
+            if(_dataInfo.LastWriteDateSourceFile != _dataInfo.LastUpdateDate)
             {
                 return false;
             }
@@ -47,9 +47,20 @@ namespace DayEfficiency
                 return false;
             }
         }
+        public bool IsItFirstLounch()
+        {
+            if(_dataInfo.LastUpdateDate == new DateTime(2023, 01, 01) && _dataInfo.LastMonthEfficiency == 0)
+            {
+                return true;
+            }
+            else
+            { 
+                return false;
+            }
+        }
         public bool DefineAndExecuteStrategy()
         {
-                if (_dataInfo.LastUpdateDate == new DateTime(2023, 01, 01) && _dataInfo.LastMonthEfficiency == 0)
+                if (IsItFirstLounch())
                 {
                     ExecuteFirstLounchStrategy();
                     return true;

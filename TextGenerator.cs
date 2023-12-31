@@ -46,6 +46,7 @@ namespace DayEfficiency
             StringBuilder record = new StringBuilder();
             record.Append(BuildHeadLine());
             record.Append(BuildNewMonthLine());
+            record.Append("\t");
             record.Append(GetWhiteSpace(startDay - 1));
             record.Append("\t");
             record.Append(String.Format("{0:0.00}", hours));

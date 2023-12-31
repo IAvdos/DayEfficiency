@@ -18,7 +18,7 @@ class Program
 */
         Presenter presenter = new Presenter();
         //Presenter presenter = new Presenter(dataInfo);
-        if(presenter.IsSourseFileChenged())
+        if(presenter.IsSourseFileChenged() || presenter.IsItFirstLounch())
         {
             if (presenter.IsProcessedTime())
             {
@@ -39,7 +39,7 @@ class Program
         }
         else
         {
-            Console.WriteLine("Data in source file is not changed.")
+            Console.WriteLine("Data in source file is not changed.");
         } 
         Console.WriteLine("Push any button.");
         Console.ReadKey();
