@@ -18,6 +18,7 @@ class Program
 */
         Presenter presenter = new Presenter();
         //Presenter presenter = new Presenter(dataInfo);
+        
         if(presenter.IsSourseFileChenged() || presenter.IsItFirstLounch())
         {
             if (presenter.IsProcessedTime())
@@ -41,7 +42,7 @@ class Program
         {
             Console.WriteLine("Data in source file is not changed.");
         } 
-        Console.WriteLine("Push any button.");
+        Console.WriteLine("Push any button to exit.");
         Console.ReadKey();
     }
 }

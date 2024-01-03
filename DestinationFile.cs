@@ -28,7 +28,7 @@ namespace DayEfficiency
         {
             if (IsFileFree())
             {
-                using (var writer = new StreamWriter(_filePaht, true))
+                using (var writer = new StreamWriter(_filePaht, true, Encoding.UTF8))
                 {
                     writer.Write(value);
                 }

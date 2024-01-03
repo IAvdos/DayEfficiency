@@ -5,6 +5,7 @@ using System.Net.WebSockets;
 using System.Text;
 using System.Threading.Tasks;
 using FastExcel;
+using System.Globalization;
 
 namespace DayEfficiency
 {
@@ -39,9 +40,8 @@ namespace DayEfficiency
                 using (FastExcel.FastExcel excel = new FastExcel.FastExcel(_sourseExcel, true))
                 {
                     var worksheet = excel.Read(1);
-
+                    
                     var rows = worksheet.Rows.ToArray();
-
                     var cell = rows[_cellRowNumber].Cells.ToArray()[_cellColumnNumber];
                     _cellValue = Double.Parse(cell.Value.ToString().Replace('.', ','));
                     _cellValue = Math.Round(_cellValue, 2);
