@@ -11,6 +11,7 @@ namespace DayEfficiency
         private DestinationFile _destinationFile = null;
         private ExcelFile _sourceFile = null;
         private DateTime _currentDate;
+        private double _curentCellValue = 0;
 
         public DataInfoGenerator()
         {
@@ -27,7 +28,7 @@ namespace DayEfficiency
                 LastUpdateDate = ConfigData.LastProcessedDate,
                 CurrentEfficiency = CalculateCurrentEfficiency(),
                 LastMonthEfficiency = ConfigData.LastCellValue,
-                CurrentMonthEfficiency = _sourceFile.GetCellValue(ConfigData.CellAddress),
+                CurrentMonthEfficiency = _curentCellValue,
                 ProcessedTime = ConfigData.ProcessedTime,
                 LastWriteDateSourceFile = _sourceFile.GetLastUpdateDate()
             };
@@ -36,7 +37,9 @@ namespace DayEfficiency
         
         private double CalculateCurrentEfficiency()
         {
-            return _sourceFile.GetCellValue(ConfigData.CellAddress) - ConfigData.LastCellValue;
+            _curentCellValue = _sourceFile.GetCellValue(ConfigData.CellAddress);
+           
+            return _curentCellValue - ConfigData.LastCellValue;
         }
         
     }

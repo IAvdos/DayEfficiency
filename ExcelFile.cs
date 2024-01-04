@@ -51,7 +51,7 @@ namespace DayEfficiency
             else
             {
                 Console.WriteLine("Source file busy. Please close it, and restart program.");
-                return -1;
+                return -2;
             }
             
         }

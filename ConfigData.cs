@@ -16,7 +16,7 @@ namespace DayEfficiency
         public static string CellAddress { get; private set; } = "C18";
         public static DateTime LastProcessedDate { get; private set; } = new DateTime(2023, 01, 01, 00, 00, 00);
         public static TimeOnly ProcessedTime { get; private set; } = new TimeOnly(05, 00);
-        public static double LastCellValue { get; set; } = 0;
+        public static double LastCellValue { get; set; } = -1;
         
         
         public static void ReadAppConfig() 

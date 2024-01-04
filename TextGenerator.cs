@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,7 +17,7 @@ namespace DayEfficiency
                 record.Append(BuildNewMonthLine());
             }
             record.Append("\t");
-            record.Append(String.Format("{0:0.00}", hours));  
+            record.Append(String.Format(CultureInfo.GetCultureInfo("ru-RU"),"{0:0.00}", hours));
             if(freeDays > 0)
             {
                 record.Append("\t");
@@ -49,7 +50,7 @@ namespace DayEfficiency
             record.Append("\t");
             record.Append(GetWhiteSpace(startDay - 1));
             record.Append("\t");
-            record.Append(String.Format("{0:0.00}", hours));
+            record.Append(String.Format(CultureInfo.GetCultureInfo("ru-RU"),"{0:0.00}", hours));
 
             return record.ToString();
         }
@@ -93,7 +94,6 @@ namespace DayEfficiency
                 {
                     _whiteSpace.Append("\t"); 
                 }
-                                    
             }
             return _whiteSpace.ToString();
         }
