@@ -1,5 +1,5 @@
 ﻿using System;
-using System.IO;
+using System.Text;
 
 namespace DayEfficiency;
 
@@ -7,6 +7,8 @@ class Program
 {
     static void Main() 
     {
+        Console.OutputEncoding = Encoding.UTF8;
+        
         Presenter presenter = new Presenter();
                 
         if(presenter.IsSourseFileChenged() || presenter.IsItFirstLounch())
