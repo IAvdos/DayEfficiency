@@ -23,7 +23,7 @@ internal class Presenter
         _textGenerator = new TextGenerator();
     }
 
-    public bool IsSourseFileChenged()
+    public bool IsSourseFileChanged()
     {
         if (_dataInfo.LastWriteDateSourceFile != _dataInfo.LastUpdateDate)
         {
@@ -37,7 +37,8 @@ internal class Presenter
 
     public bool IsProcessedTime()
     {
-        if (_dataInfo.CurentDate.Hour > _dataInfo.ProcessedTime.Hour && _dataInfo.CurentDate.Hour < 24 && _dataInfo.LastUpdateDate != _dataInfo.CurentDate)
+        if (_dataInfo.CurentDate.Hour > _dataInfo.ProcessedTime.Hour && _dataInfo.CurentDate.Hour < 24 &&
+                _dataInfo.LastUpdateDate != _dataInfo.CurentDate)
         {
             return true;
         }
@@ -47,23 +48,16 @@ internal class Presenter
         }
     }
 
-    public bool IsItFirstLounch()
+    public bool IsItFirstLaunch()
     {
-        if (_dataInfo.LastMonthEfficiency == -1)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return _dataInfo.LastMonthEfficiency == -1;
     }
 
     public bool DefineAndExecuteStrategy()
     {
-        if (IsItFirstLounch())
+        if (IsItFirstLaunch())
         {
-            ExecuteFirstLounchStrategy();
+            ExecuteFirstLaunchStrategy();
             return true;
         }
         else if (_dataInfo.LastUpdateDate.Month == _dataInfo.CurentDate.Month)
@@ -87,13 +81,13 @@ internal class Presenter
         return false;
     }
 
-    private void UpdateConfig(DateTime currentDate, double currentEfficiency)
+    private void UpdateConfig(DateTime currentDate, decimal currentEfficiency)
     {
         ConfigData.UpdateConfig(ConfigKeys.lastProcessedDate, currentDate.ToString());
         ConfigData.UpdateConfig(ConfigKeys.lastCellValue, currentEfficiency.ToString());
     }
 
-    private void ExecuteFirstLounchStrategy()
+    private void ExecuteFirstLaunchStrategy()
     {
         Console.WriteLine("It's firs program lounch.");
         _txtFile.WriteRecord(_textGenerator.BuildFirstRecord(0, _dataInfo.CurentDate.Day));

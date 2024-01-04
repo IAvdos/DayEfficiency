@@ -8,10 +8,10 @@ using DayEfficiency;
 internal class ExcelFile
 {
     private FileInfo _sourseExcel = null;
-    private double _cellValue = 0;
+    private decimal _cellValue = 0;
     private int _cellColumnNumber = 0;
     private int _cellRowNumber = 0;
-    public double CellValue { get { return _cellValue; } }
+    public decimal CellValue { get { return _cellValue; } }
     
     public ExcelFile(string filePaht)
     {
@@ -27,20 +27,20 @@ internal class ExcelFile
     
     public DateTime GetLastUpdateDate() { return _sourseExcel.LastWriteTime; }
     
-    public double GetCellValue(string cellAddress)
+    public decimal GetCellValue(string cellAddress)
     {
         ConvertCellAddress(cellAddress);
         CultureInfo culture = CultureInfo.GetCultureInfo("en-US");
         if (IsFileFree())
         {
+
             using (FastExcel.FastExcel excel = new FastExcel.FastExcel(_sourseExcel, true))
             {
                 var worksheet = excel.Read(1);
-                
                 var rows = worksheet.Rows.ToArray();
                 var cell = rows[_cellRowNumber].Cells.ToArray()[_cellColumnNumber];
-                _cellValue = Double.Parse(cell.Value.ToString().Replace('.', ','));
-                _cellValue = Math.Round(_cellValue, 2);
+                _cellValue = ParseCellValue(cell.ToString());
+				_cellValue = Math.Round(_cellValue, 2);
             }
             return _cellValue;
         }
@@ -50,7 +50,19 @@ internal class ExcelFile
             return -2;
         }
     }
-    
+
+    private decimal ParseCellValue(string cellValue)
+    {
+        if(CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator == ".")
+        {
+            return Convert.ToDecimal(cellValue);
+        }
+        else
+        {
+            return Convert.ToDecimal(cellValue.Replace(".", ","));
+        }
+    }
+
     private bool IsFileFree()
     {
         try
@@ -61,18 +73,17 @@ internal class ExcelFile
         }
         catch (Exception ex)
         {
-            Console.WriteLine("Файл с данными занят. Закройте файл и перезапустите приложение.");                
+            Console.WriteLine("Файл с данными занят. Закройте файл и перезапустите приложение.");
         }
         return false;
     }
-    
+
     private void ConvertCellAddress(string cellAddress)
     {
         int _columnNumber = 0;
         int _rowNumber = 0;
         string _letterColun = null;
-    
-    
+ 
         for (int i = 0; i < cellAddress.Length; i++)
         {
             if (char.IsLetter(cellAddress[i])) _letterColun += cellAddress[i];
@@ -83,16 +94,16 @@ internal class ExcelFile
             }
         }
         _columnNumber = ConvertColumnLatterToItn(_letterColun.ToUpper());
-    
+
         _cellColumnNumber = _columnNumber - 1;
         _cellRowNumber = _rowNumber - 1;
     }
-    
+
     private int ConvertColumnLatterToItn(string columnLatter)
     {
         double _lettersInAlphabet = 26;
         double _columnNumber = 0;
-    
+
         for (int i = columnLatter.Length - 1; i >= 0; i--)
         {
             double rank = columnLatter.Length - i - 1;

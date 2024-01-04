@@ -6,7 +6,7 @@ internal class DestinationFile
 {
     private string? _filePaht;
     private DestinationFile() { }
-    
+
     public DestinationFile(string filePaht)
     {
         if (File.Exists(filePaht))
@@ -42,7 +42,7 @@ internal class DestinationFile
             stream.Close();
             return true;
         } catch(Exception ex)
-        {                
+        {
             Console.WriteLine("Файл недоступен для записи. Закройте файл, либо измените свойство файла (Только для чтения).");
             return false;
         }

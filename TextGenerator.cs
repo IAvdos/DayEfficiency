@@ -8,7 +8,7 @@ using DayEfficiency;
 
 internal class TextGenerator
 {
-    public string BuildRecord(double hours, int freeDays, bool isNewMonth)
+    public string BuildRecord(decimal hours, int freeDays, bool isNewMonth)
     {
         var record = new StringBuilder();
         if (isNewMonth)
@@ -24,9 +24,10 @@ internal class TextGenerator
         record.Append(GetWhiteSpace(freeDays));
 
         return record.ToString();
-    }
+    } 
 
-    public string BuildWhiteSpaceRecord(int freeDays) 
+
+    public string BuildWhiteSpaceRecord(int freeDays)
     {
         StringBuilder record = new StringBuilder();
         record.Append("\t");
@@ -44,7 +45,7 @@ internal class TextGenerator
         return record.ToString();
     }
 
-    public string BuildFirstRecord(double hours, int startDay)
+    public string BuildFirstRecord(decimal hours, int startDay)
     {
         StringBuilder record = new StringBuilder();
         record.Append(BuildHeadLine());

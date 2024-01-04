@@ -7,7 +7,7 @@ internal class DataInfoGenerator
     private DestinationFile _destinationFile = null;
     private ExcelFile _sourceFile = null;
     private DateTime _currentDate;
-    private double _curentCellValue = 0;
+    private decimal _curentCellValue = 0;
 
     public DataInfoGenerator()
     {
@@ -32,7 +32,7 @@ internal class DataInfoGenerator
         return dataInfo;
     }
 
-    private double CalculateCurrentEfficiency()
+    private decimal CalculateCurrentEfficiency()
     {
         _curentCellValue = _sourceFile.GetCellValue(ConfigData.CellAddress);
        

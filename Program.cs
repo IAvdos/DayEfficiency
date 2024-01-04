@@ -5,18 +5,18 @@ namespace DayEfficiency;
 
 class Program
 {
-    static void Main() 
+    static void Main()
     {
         Console.OutputEncoding = Encoding.UTF8;
-        
+
         Presenter presenter = new Presenter();
-                
-        if(presenter.IsSourseFileChenged() || presenter.IsItFirstLounch())
+
+        if(presenter.IsSourseFileChanged() || presenter.IsItFirstLaunch())
         {
             if (presenter.IsProcessedTime())
             {
-                var start = presenter.DefineAndExecuteStrategy();
-				if (start)
+                var isSuccsessfully = presenter.DefineAndExecuteStrategy();
+				if (isSuccsessfully)
 				{
 					Console.WriteLine("Program completed successfully.");
 				}
@@ -25,9 +25,10 @@ class Program
 					Console.WriteLine("Program failed.");
 				}
 			}
+        
             else
             {
-				Console.WriteLine("Wrong start time program. Please lounch it between 5:00 and 24:00");
+				Console.WriteLine("Wrong start time program. Please launch it between 5:00 and 24:00");
 			}
         }
         else
