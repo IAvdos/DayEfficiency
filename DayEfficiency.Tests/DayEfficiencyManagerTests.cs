@@ -1,12 +1,11 @@
-﻿using DayEfficiency;
-using Newtonsoft.Json.Linq;
-using System.Configuration;
+﻿using System.Configuration;
 using System.Text;
 namespace DayEfficiency.Tests;
+
 public class DayEfficiencyManagerTests
 {
-	private string _testFile = "C:\\Users\\Avdos\\OneDrive\\Рабочий стол\\DayEfficiency\\TestResources\\Test.txt";
-	private string _testRecordSamples = "C:\\Users\\Avdos\\OneDrive\\Рабочий стол\\DayEfficiency\\TestResources\\TestRecordSamples.txt";
+	private string _testFile = "F:\\Development\\DayEfficiency\\DayEfficiency.Tests\\TestResources\\Test.txt";
+	private string _testRecordSamples = "F:\\Development\\DayEfficiency\\DayEfficiency.Tests\\TestResources\\TestRecordSamples.txt";
 
 	[Fact]
 	public void ProduceEfficiency_FirstLaunch_CorrectWrite()
@@ -114,7 +113,7 @@ public class DayEfficiencyManagerTests
 	private DayEfficiencyManager GetDayEfficiencyManager(EfficiencyData efficiencyData)
 	{
 		var map = new ExeConfigurationFileMap();
-		map.ExeConfigFilename = "C:\\Users\\Avdos\\OneDrive\\Рабочий стол\\DayEfficiency.Tests\\App.config";
+		map.ExeConfigFilename = "F:\\Development\\DayEfficiency\\DayEfficiency.Tests\\App.config";
 
 		var configFile = ConfigurationManager.OpenMappedExeConfiguration(map, ConfigurationUserLevel.None);
 		var logWriter = new ConsoleLogWriter();

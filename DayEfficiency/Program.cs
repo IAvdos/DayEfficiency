@@ -7,7 +7,6 @@ namespace DayEfficiency;
 
 class Program
 {
-
 	static void Main()
 	{
 		Console.OutputEncoding = Encoding.UTF8;

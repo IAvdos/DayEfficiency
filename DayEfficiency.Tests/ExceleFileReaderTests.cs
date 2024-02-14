@@ -1,5 +1,4 @@
 ﻿using DayEfficiency;
-using DayEfficiency.Tests;
 
 public class ExceleFileReaderTests
 {
@@ -21,7 +20,7 @@ public class ExceleFileReaderTests
 	public void TryReadFromExcelFile_CorrectResult()
 	{
 		//Act
-		_excelFileReader.TryReadFromExcelFile("C:\\Users\\Avdos\\OneDrive\\Рабочий стол\\DayEfficiency\\TestResources\\ExcelTest.xlsx", "A1");
+		_excelFileReader.TryReadFromExcelFile("F:\\Development\\DayEfficiency\\DayEfficiency.Tests\\TestResources\\ExcelTest.xlsx", "A1");
 		var result = _excelFileReader.CellValue;
 		//Assert
 		Assert.Equal(11.22m, result);
@@ -31,7 +30,7 @@ public class ExceleFileReaderTests
 	public void TryReadFromExcelFile_NotNull()
 	{
 		//Act
-		_excelFileReader.TryReadFromExcelFile("C:\\Users\\Avdos\\OneDrive\\Рабочий стол\\DayEfficiency\\TestResources\\ExcelTest.xlsx", "E1");
+		_excelFileReader.TryReadFromExcelFile("F:\\Development\\DayEfficiency\\DayEfficiency.Tests\\TestResources\\ExcelTest.xlsx", "E1");
 		var result = _excelFileReader.CellValue;
 		//Assert
 		Assert.Equal(-1m, result);

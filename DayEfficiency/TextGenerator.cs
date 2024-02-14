@@ -2,16 +2,14 @@
 using System.Text;
 using DayEfficiency;
 
-
-
 public class TextGenerator
 {
-    public string BuildRecord(decimal hours, int freeDays, bool isNewMonth)
+    public string BuildRecord(decimal hours, int freeDays, bool isNewMonth, DateTime currentDate)
     {
         var record = new StringBuilder();
         if (isNewMonth)
         {
-            record.Append(BuildNewMonthLine());
+            record.Append(BuildNewMonthLine(currentDate));
         }
         record.Append("\t");
         record.Append(String.Format(CultureInfo.GetCultureInfo("ru-RU"),"{0:0.00}", hours));
@@ -33,31 +31,31 @@ public class TextGenerator
         return record.ToString();
     }
 
-    public string BuildWhiteSpaceInNewMonthLine(int freeDays)
+    public string BuildWhiteSpaceInNewMonthLine(DateTime currentDate)
     {
         StringBuilder record = new StringBuilder();
-        record.Append(BuildNewMonthLine());
+        record.Append(BuildNewMonthLine(currentDate));
         record.Append("\t");
-        record.Append(GetWhiteSpace(freeDays));
+        record.Append(GetWhiteSpace(currentDate.Day - 1));
         return record.ToString();
     }
 
-    public string BuildFirstRecord(decimal hours, int startDay)
+    public string BuildFirstRecord(decimal hours, DateTime currentDate)
     {
         StringBuilder record = new StringBuilder();
         record.Append(BuildHeadLine());
-        record.Append(BuildNewMonthLine());
+        record.Append(BuildNewMonthLine(currentDate));
         record.Append("\t");
-        record.Append(GetWhiteSpace(startDay - 1));
+        record.Append(GetWhiteSpace(currentDate.Day - 1));
         record.Append("\t");
         record.Append(String.Format(CultureInfo.GetCultureInfo("ru-RU"),"{0:0.00}", hours));
 
         return record.ToString();
     }
     
-    private string BuildNewMonthLine()
+    private string BuildNewMonthLine(DateTime currentDate)
     {
-        string date = DateTime.Now.Date.ToString("yyyy\tMM");
+        string date = currentDate.Date.ToString("yyyy\tMM");
       
         return  "\r\n" + date;
     }
