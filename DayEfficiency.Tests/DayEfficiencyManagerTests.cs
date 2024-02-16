@@ -4,8 +4,10 @@ namespace DayEfficiency.Tests;
 
 public class DayEfficiencyManagerTests
 {
-	private string _testFile = "F:\\Development\\DayEfficiency\\DayEfficiency.Tests\\TestResources\\Test.txt";
-	private string _testRecordSamples = "F:\\Development\\DayEfficiency\\DayEfficiency.Tests\\TestResources\\TestRecordSamples.txt";
+	//"F:\\Development\\DayEfficiency\\DayEfficiency.Tests\\TestResources\\Test.txt"
+	private string _testFile = ".\\..\\..\\..\\TestResources\\Test.txt";
+	//"F:\\Development\\DayEfficiency\\DayEfficiency.Tests\\TestResources\\TestRecordSamples.txt"
+	private string _testRecordSamples = ".\\..\\..\\..\\TestResources\\TestRecordSamples.txt";
 
 	[Fact]
 	public void ProduceEfficiency_FirstLaunch_CorrectWrite()

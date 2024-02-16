@@ -3,6 +3,9 @@
 public class ExceleFileReaderTests
 {
 	private ExcelFileReader _excelFileReader;
+	//"F:\\Development\\DayEfficiency\\DayEfficiency.Tests\\TestResources\\ExcelTest.xlsx"
+	private string _excelFile = ".\\..\\..\\..\\TestResources\\ExcelTest.xlsx";
+
 	public ExceleFileReaderTests() 
 	{
 		_excelFileReader = new ExcelFileReader(new ConsoleLogWriter());
@@ -20,7 +23,7 @@ public class ExceleFileReaderTests
 	public void TryReadFromExcelFile_CorrectResult()
 	{
 		//Act
-		_excelFileReader.TryReadFromExcelFile("F:\\Development\\DayEfficiency\\DayEfficiency.Tests\\TestResources\\ExcelTest.xlsx", "A1");
+		_excelFileReader.TryReadFromExcelFile(_excelFile, "A1");
 		var result = _excelFileReader.CellValue;
 		//Assert
 		Assert.Equal(11.22m, result);
@@ -30,7 +33,7 @@ public class ExceleFileReaderTests
 	public void TryReadFromExcelFile_NotNull()
 	{
 		//Act
-		_excelFileReader.TryReadFromExcelFile("F:\\Development\\DayEfficiency\\DayEfficiency.Tests\\TestResources\\ExcelTest.xlsx", "E1");
+		_excelFileReader.TryReadFromExcelFile(_excelFile, "E1");
 		var result = _excelFileReader.CellValue;
 		//Assert
 		Assert.Equal(-1m, result);
