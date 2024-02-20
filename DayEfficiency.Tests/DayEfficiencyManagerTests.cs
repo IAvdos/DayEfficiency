@@ -1,4 +1,5 @@
 ﻿using System.Configuration;
+using System.IO;
 using System.Text;
 namespace DayEfficiency.Tests;
 
@@ -8,6 +9,27 @@ public class DayEfficiencyManagerTests
 	string _testFile = ".\\..\\..\\..\\TestResources\\Test.txt";
 	//"F:\\Development\\DayEfficiency\\DayEfficiency.Tests\\TestResources\\TestRecordSamples.txt"
 	string _testRecordSamples = ".\\..\\..\\..\\TestResources\\TestRecordSamples.txt";
+
+	[Fact]
+	public void ProduceEfficiency_DestinationFileNotExists_False()
+	{
+		string tempPath = _testFile;
+		_testFile = "C:\\feiled file name.txt";
+		var efficiencyData = GetTestEfficiencyData(
+			currentDayEfficiency: 0m,
+			lastExcelFileUpdateDate: new DateTime(2024, 01, 07),
+			lastProcessedDate: new DateTime(2024, 01, 07),
+			currentMonthEfficiency: 45m,
+			lastMonthEfficiency: -1m);
+		var efficiencyManager = GetDayEfficiencyManager(efficiencyData);
+
+
+		var result = efficiencyManager.ProduceEfficiency(new DateTime(2024, 01, 08));
+
+
+		Assert.False(result);
+		_testFile = tempPath;
+	}
 
 	[Fact]
 	public void ProduceEfficiency_FirstLaunch_CorrectWrite()
@@ -126,8 +148,7 @@ public class DayEfficiencyManagerTests
 
 	void ClearTestFile()
 	{
-		var stream = new StreamWriter(_testFile, false, Encoding.UTF8);
-		stream.Close();
+		File.WriteAllText(_testFile, String.Empty);
 	}
 	
 	EfficiencyData GetTestEfficiencyData(

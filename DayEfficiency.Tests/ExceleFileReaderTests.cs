@@ -14,7 +14,7 @@ public class ExceleFileReaderTests
 	[Fact]
 	public void TryReadFromExcelFile_False_FileNotFound()
 	{
-		var result = _excelFileReader.TryReadFromExcelFile("C:\\Users\\Avdos\\OneDrive\\fail.xlsx", "A1");
+		var result = _excelFileReader.TryReadFromExcelFile("C:\\feiled file name.xlsx", "A1");
 
 
 		Assert.False(result);
