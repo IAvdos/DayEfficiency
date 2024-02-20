@@ -4,7 +4,7 @@ using DayEfficiency;
 
 public class AppConfigProcessor
 {
-    private AppConfigProcessor() { }
+    AppConfigProcessor() { }
     public AppConfigProcessor(Configuration configuration)
     {
         _appConfiguration = configuration;
@@ -54,6 +54,7 @@ public class AppConfigProcessor
 
 		_appConfiguration.Save(ConfigurationSaveMode.Full);
         ConfigurationManager.RefreshSection(_appConfiguration.AppSettings.SectionInformation.Name);
+
         ReadConfig();
     }
 }

@@ -5,22 +5,29 @@ namespace DayEfficiency.Tests;
 public class DayEfficiencyManagerTests
 {
 	//"F:\\Development\\DayEfficiency\\DayEfficiency.Tests\\TestResources\\Test.txt"
-	private string _testFile = ".\\..\\..\\..\\TestResources\\Test.txt";
+	string _testFile = ".\\..\\..\\..\\TestResources\\Test.txt";
 	//"F:\\Development\\DayEfficiency\\DayEfficiency.Tests\\TestResources\\TestRecordSamples.txt"
-	private string _testRecordSamples = ".\\..\\..\\..\\TestResources\\TestRecordSamples.txt";
+	string _testRecordSamples = ".\\..\\..\\..\\TestResources\\TestRecordSamples.txt";
 
 	[Fact]
 	public void ProduceEfficiency_FirstLaunch_CorrectWrite()
 	{
-		//Arrange
 		ClearTestFile();
-		var efficiencyData = GetTestEfficiencyData(0m, new DateTime(2024, 01, 07), new DateTime(2024, 01, 07), 45m, -1m);
+
+		var efficiencyData = GetTestEfficiencyData(
+			currentDayEfficiency : 0m,
+			lastExcelFileUpdateDate : new DateTime(2024, 01, 07),
+			lastProcessedDate : new DateTime(2024, 01, 07),
+			currentMonthEfficiency : 45m,
+			lastMonthEfficiency : -1m);
 		var efficiencyManager = GetDayEfficiencyManager(efficiencyData);
-		//Act
+
+
 		var isFine = efficiencyManager.ProduceEfficiency(new DateTime(2024, 01, 08));
 		var testRecord = ReadTestRecord();
 		var sampleRecord = ReadSampleRecord("FirstLaunch");
-		//Assert
+
+
 		Assert.True(isFine);
 		Assert.Equal(sampleRecord, testRecord);
 	}
@@ -28,31 +35,45 @@ public class DayEfficiencyManagerTests
 	[Fact]
 	public void ProduceEfficiency_ActualMonthLaunch_CorrectWrite()
 	{
-		//Arrange
 		ClearTestFile();
-		var efficiencyData = GetTestEfficiencyData(3.55m, new DateTime(2024, 01, 09), new DateTime(2024, 01, 08), 45m, 48.55m);
+
+		var efficiencyData = GetTestEfficiencyData(
+			currentDayEfficiency : 3.55m,
+			lastExcelFileUpdateDate : new DateTime(2024, 01, 09),
+			lastProcessedDate : new DateTime(2024, 01, 08),
+			currentMonthEfficiency : 45m,
+			lastMonthEfficiency : 48.55m);
 		var efficiencyManager = GetDayEfficiencyManager(efficiencyData);
-		//Act
+
+
 		var isFine = efficiencyManager.ProduceEfficiency(new DateTime(2024, 01, 09));
 		var testRecord = ReadTestRecord();
 		var sampleRecord = ReadSampleRecord("ActualMonthLaunch");
-		//Assert
+
+
 		Assert.True(isFine);
 		Assert.Equal(sampleRecord, testRecord);
 	}
 
 	[Fact]
-	public void ProduceEfficiency_ActualMaunthLaunchWithTwoDaysFree_CorrectWrite()
+	public void ProduceEfficiency_ActualMounthLaunchWithTwoDaysFree_CorrectWrite()
 	{
-		//Arrange
 		ClearTestFile();
-		var efficiencyData = GetTestEfficiencyData(11.22m, new DateTime(2024, 01, 13), new DateTime(2024, 01, 10), 21.22m, 11m);
+
+		var efficiencyData = GetTestEfficiencyData(
+			currentDayEfficiency : 11.22m,
+			lastExcelFileUpdateDate : new DateTime(2024, 01, 13),
+			lastProcessedDate : new DateTime(2024, 01, 10),
+			currentMonthEfficiency : 21.22m,
+			lastMonthEfficiency : 11m);
 		var efficiencyManager = GetDayEfficiencyManager(efficiencyData);
-		//Act
+
+
 		var isFine = efficiencyManager.ProduceEfficiency(new DateTime(2024, 01, 13));
 		var testRecord = ReadTestRecord();
 		var sampleRecord = ReadSampleRecord("ActualMaunthLaunchWithTreeDaysFree");
-		//Assert
+
+
 		Assert.True(isFine);
 		Assert.Equal(sampleRecord, testRecord);
 	}
@@ -60,15 +81,22 @@ public class DayEfficiencyManagerTests
 	[Fact]
 	public void ProduceEfficiency_NewMonthLaunch_CorrectWrite()
 	{
-		//Arrange
 		ClearTestFile();
-		var efficiencyData = GetTestEfficiencyData(11.22m, new DateTime(2024, 02, 01), new DateTime(2024, 01, 31), 21.22m, 11m);
+
+		var efficiencyData = GetTestEfficiencyData(
+			currentDayEfficiency : 11.22m,
+			lastExcelFileUpdateDate : new DateTime(2024, 02, 01),
+			lastProcessedDate : new DateTime(2024, 01, 31),
+			currentMonthEfficiency : 21.22m,
+			lastMonthEfficiency : 11m);
 		var efficiencyManager = GetDayEfficiencyManager(efficiencyData);
-		//Act
+
+
 		var isFine = efficiencyManager.ProduceEfficiency(new DateTime(2024, 02, 01));
 		var testRecord = ReadTestRecord();
 		var sampleRecord = ReadSampleRecord("NewMonthLaunch");
-		//Assert
+
+
 		Assert.True(isFine);
 		Assert.Equal(sampleRecord, testRecord);
 	}
@@ -76,27 +104,38 @@ public class DayEfficiencyManagerTests
 	[Fact]
 	public void ProduceEfficiency_NewMonthLaunchWithTreeDaysFreeInPrevious_CorrectWrite()
 	{
-		//Arrange
 		ClearTestFile();
-		var efficiencyData = GetTestEfficiencyData(11.22m, new DateTime(2024, 02, 01), new DateTime(2024, 01, 28), 21.22m, 11m);
+
+		var efficiencyData = GetTestEfficiencyData(
+			currentDayEfficiency: 11.22m,
+			lastExcelFileUpdateDate: new DateTime(2024, 02, 01),
+			lastProcessedDate: new DateTime(2024, 01, 28),
+			currentMonthEfficiency: 21.22m,
+			lastMonthEfficiency: 11m);
 		var efficiencyManager = GetDayEfficiencyManager(efficiencyData);
-		//Act
+
+
 		var isFine = efficiencyManager.ProduceEfficiency(new DateTime(2024, 02, 01));
 		var testRecord = ReadTestRecord();
 		var sampleRecord = ReadSampleRecord("NewMonthLaunchWithTreeDaysFreeInPrevious");
-		//Assert
+
+
 		Assert.True(isFine);
 		Assert.Equal(sampleRecord, testRecord);
 	}
 
-	private void ClearTestFile()
+	void ClearTestFile()
 	{
 		var stream = new StreamWriter(_testFile, false, Encoding.UTF8);
 		stream.Close();
 	}
 	
-	private EfficiencyData GetTestEfficiencyData(decimal currentDayEfficiency, DateTime lastExcelFileUpdateDate, DateTime lastProcessedDate,
-		decimal currentMonthEfficiency, decimal lastMonthEfficiency)
+	EfficiencyData GetTestEfficiencyData(
+		decimal currentDayEfficiency,
+		DateTime lastExcelFileUpdateDate,
+		DateTime lastProcessedDate,
+		decimal currentMonthEfficiency,
+		decimal lastMonthEfficiency)
 	{
 		var efficiencyData = new EfficiencyData()
 		{
@@ -112,10 +151,10 @@ public class DayEfficiencyManagerTests
 		return efficiencyData;
 	}
 
-	private DayEfficiencyManager GetDayEfficiencyManager(EfficiencyData efficiencyData)
+	DayEfficiencyManager GetDayEfficiencyManager(EfficiencyData efficiencyData)
 	{
 		var map = new ExeConfigurationFileMap();
-		map.ExeConfigFilename = "F:\\Development\\DayEfficiency\\DayEfficiency.Tests\\App.config";
+		map.ExeConfigFilename = ".\\..\\..\\..\\App.config";
 
 		var configFile = ConfigurationManager.OpenMappedExeConfiguration(map, ConfigurationUserLevel.None);
 		var logWriter = new ConsoleLogWriter();
@@ -127,10 +166,10 @@ public class DayEfficiencyManagerTests
 		return efficiencyManager;
 	}
 
-	private string ReadSampleRecord(string sampleName)
+	string ReadSampleRecord(string sampleName)
 	{
-		string record = null;
 		string samples = null;
+
 		using(var reader = new StreamReader(_testRecordSamples))
 		{
 			samples = reader.ReadToEnd();
@@ -139,7 +178,7 @@ public class DayEfficiencyManagerTests
 		return GetRecordSample(sampleName, samples);
 	}
 
-	private string GetRecordSample(string sampleName, string samples)
+	string GetRecordSample(string sampleName, string samples)
 	{
 		var samplesArray = samples.Split('#');
 		string record = null;
@@ -156,7 +195,7 @@ public class DayEfficiencyManagerTests
 		return record;
 	}
 
-	private string ReadTestRecord()
+	string ReadTestRecord()
 	{
 		string record;
 		using (var reader = new StreamReader(_testFile))

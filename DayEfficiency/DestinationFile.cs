@@ -3,13 +3,14 @@ using DayEfficiency;
 
 public class DestinationFile
 {
-    private string? _filePaht;
-    private ILogWriter _logWriter;
-    private DestinationFile() { }
+    string? _filePaht;
+    ILogWriter _logWriter;
+    DestinationFile() { }
     public DestinationFile(ILogWriter logWriter)
     {
         _logWriter = logWriter;
     }
+
     public bool IsFileExistAndFree(string filePaht)
     {
 		if (File.Exists(filePaht))
@@ -22,12 +23,14 @@ public class DestinationFile
 			else
 			{
 				_logWriter.WriteMessege("Destination .txt file busy, please close file and relaunch DayEfficiency");
+
                 return false;
 			}
 		}
 		else
 		{
 			_logWriter.WriteMessege("Destination .txt file not exist, or incorect file paht.");
+
             return false;
 		}
 	}
@@ -40,7 +43,7 @@ public class DestinationFile
         }
     }
 
-    private bool IsFileFree()
+    bool IsFileFree()
     {
         try
         {

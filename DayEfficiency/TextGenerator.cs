@@ -4,19 +4,26 @@ using DayEfficiency;
 
 public class TextGenerator
 {
-    public string BuildRecord(decimal hours, int freeDays, bool isNewMonth, DateTime currentDate)
+    public string BuildRecord(
+        decimal hours,
+        int freeDays,
+        bool isNewMonth,
+        DateTime currentDate)
     {
         var record = new StringBuilder();
         if (isNewMonth)
         {
             record.Append(BuildNewMonthLine(currentDate));
         }
+
         record.Append("\t");
         record.Append(String.Format(CultureInfo.GetCultureInfo("ru-RU"),"{0:0.00}", hours));
+
         if(freeDays > 0)
         {
             record.Append("\t");
         }
+
         record.Append(GetWhiteSpace(freeDays));
 
         return record.ToString();
@@ -37,6 +44,7 @@ public class TextGenerator
         record.Append(BuildNewMonthLine(currentDate));
         record.Append("\t");
         record.Append(GetWhiteSpace(currentDate.Day - 1));
+
         return record.ToString();
     }
 
@@ -77,6 +85,7 @@ public class TextGenerator
             head.Append(i + "\t");
             }
         }
+
         return head.ToString();
     }
 

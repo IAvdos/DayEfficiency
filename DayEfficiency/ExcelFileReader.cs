@@ -3,17 +3,18 @@ using System.Globalization;
 using DayEfficiency;
 public class ExcelFileReader
 {
-    private ExcelFileReader() { }
+    ExcelFileReader() { }
     public ExcelFileReader(ILogWriter logWriter)
     {
         _logWriter = logWriter;
     }
-    private ILogWriter _logWriter;
+
+    ILogWriter _logWriter;
     public decimal CellValue { get; set; }
     public DateTime LastUpdateDate { get; set; }
-    private decimal _cellValue = 0;
-    private int _cellColumnNumber = 0;
-    private int _cellRowNumber = 0;
+    decimal _cellValue = 0;
+    int _cellColumnNumber = 0;
+    int _cellRowNumber = 0;
  
 
 	public bool TryReadFromExcelFile(string sourceExcelFilePath, string cellAddress)
@@ -48,6 +49,7 @@ public class ExcelFileReader
 	public decimal GetCellValue(FileInfo excelFile, string cellAddress)
     {
         ConvertCellAddress(cellAddress);
+
         using (FastExcel.FastExcel excel = new FastExcel.FastExcel(excelFile, true))
         {
             var worksheet = excel.Read(1);
@@ -55,19 +57,21 @@ public class ExcelFileReader
             {
                 return -1m;
             }
+
             var rows = worksheet.Rows.ToArray();
             var cell = rows[_cellRowNumber].Cells.ToArray()[_cellColumnNumber];
 
-                _cellValue = ParseCellValue(cell.ToString());
-                _cellValue = Math.Round(_cellValue, 2);
+            _cellValue = ParseCellValue(cell.ToString());
+            _cellValue = Math.Round(_cellValue, 2);
         }
 
         return _cellValue; 
     }
 
-	private bool IsCellExist(Worksheet worksheet, string cellName)
+	bool IsCellExist(Worksheet worksheet, string cellName)
 	{
         var rows = worksheet.Rows;
+
         foreach (var row in rows)
         {
             if(row.RowNumber == _cellRowNumber + 1)
@@ -84,7 +88,7 @@ public class ExcelFileReader
         return false;
 	}
 
-	private decimal ParseCellValue(string cellValue)
+	decimal ParseCellValue(string cellValue)
     {
         if(CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator == ".")
         {
@@ -108,10 +112,11 @@ public class ExcelFileReader
         {
 			_logWriter.WriteMessege("Файл с данными занят. Закройте файл и перезапустите приложение.");
         }
+
         return false;
     }
 
-    private void ConvertCellAddress(string cellAddress)
+    void ConvertCellAddress(string cellAddress)
     {
         int _columnNumber = 0;
         int _rowNumber = 0;
@@ -132,7 +137,7 @@ public class ExcelFileReader
         _cellRowNumber = _rowNumber - 1;
     }
 
-    private int ConvertColumnLatterToItn(string columnLatter)
+    int ConvertColumnLatterToItn(string columnLatter)
     {
         double _lettersInAlphabet = 26;
         double _columnNumber = 0;

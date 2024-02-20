@@ -52,10 +52,9 @@ class Program
 			{
 				logWriter.WriteMessege($"Wrong start time program. Please launch it between {_efficiencyData.ProcessedTime} and 24:00");
 			}
-
-			logWriter.WriteMessege("Push any button to exit.");
-			Console.ReadKey();
-
 		}
+
+		logWriter.WriteMessege("Push any button to exit.");
+		Console.ReadKey();
 	}
 }

@@ -2,18 +2,18 @@
 
 public class EfficiencyDataGenerator
 {
-	private AppConfigProcessor _config;
-	private ExcelFileReader _excelFileReader;
+	AppConfigProcessor _config;
+	ExcelFileReader _excelFileReader;
 
-	private decimal _currentMonthEfficiency = 0;
-	private decimal _lastMonthEfficiency = 0;
-	private decimal _currentDayEfficiency = 0;
-	private DateTime _lastExcelFileUpdateDate;
-	private DateTime _lastProcessedDate;
-	private string _cellAddress;
-	private string _sourseExcelFilePath;
-	private string _destinationFilePath;
-	private TimeOnly _processedTime;
+	decimal _currentMonthEfficiency = 0;
+	decimal _lastMonthEfficiency = 0;
+	decimal _currentDayEfficiency = 0;
+	DateTime _lastExcelFileUpdateDate;
+	DateTime _lastProcessedDate;
+	string _cellAddress;
+	string _sourseExcelFilePath;
+	string _destinationFilePath;
+	TimeOnly _processedTime;
 
 
 	public EfficiencyDataGenerator(AppConfigProcessor configData, ExcelFileReader excelFile)
@@ -25,6 +25,7 @@ public class EfficiencyDataGenerator
 	public bool ReadEfficiencyData()
 	{
 		GetDataFromConfig();
+
 		if(_excelFileReader.TryReadFromExcelFile(_sourseExcelFilePath, _cellAddress))
 		{
 			_currentMonthEfficiency = _excelFileReader.CellValue;
@@ -38,6 +39,7 @@ public class EfficiencyDataGenerator
 	private void GetDataFromConfig()
 	{
 		_config.ReadConfig();
+
 		_lastMonthEfficiency = _config.LastCellValue;
 		_lastExcelFileUpdateDate = _config.LastProcessedDate;
 		_cellAddress = _config.CellAddress;

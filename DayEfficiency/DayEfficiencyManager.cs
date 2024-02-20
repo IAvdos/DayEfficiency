@@ -2,12 +2,16 @@
 
 public class DayEfficiencyManager
 {
-	private TextGenerator _textGenerator = null;
-	private DestinationFile _txtFile = null;
-	private EfficiencyData _efficiencyData = null;
-	private AppConfigProcessor _configData = null;
+	TextGenerator _textGenerator = null;
+	DestinationFile _txtFile = null;
+	EfficiencyData _efficiencyData = null;
+	AppConfigProcessor _configData = null;
 
-	public DayEfficiencyManager(TextGenerator generator, DestinationFile destinationFile, EfficiencyData data, AppConfigProcessor configData) 
+	public DayEfficiencyManager(
+		TextGenerator generator,
+		DestinationFile destinationFile,
+		EfficiencyData data,
+		AppConfigProcessor configData) 
 	{
 		_textGenerator = generator;
 		_txtFile = destinationFile;
@@ -97,39 +101,41 @@ public class DayEfficiencyManager
 		return EfficiencyContext.FaultContext;
 	}
 
-	private void UpdateConfig(DateTime currentDate, decimal currentEfficiency)
+	void UpdateConfig(DateTime currentDate, decimal currentEfficiency)
 	{
 		_configData.UpdateConfig(ConfigKeys.lastProcessedDate, currentDate.ToString());
 		_configData.UpdateConfig(ConfigKeys.lastCellValue, currentEfficiency.ToString());
 	}
 
-	private void ExecuteFirstLaunchStrategy(DateTime currentDate, decimal currentMonthEfficiency)
+	void ExecuteFirstLaunchStrategy(DateTime currentDate, decimal currentMonthEfficiency)
 	{
 		_txtFile.WriteRecord(_textGenerator.BuildFirstRecord(0, currentDate));
+
 		UpdateConfig(currentDate.Date, currentMonthEfficiency);
 	}
 
-	private void ExecuteActualMonthStrategy(DateTime currentDate, decimal currentDayEfficiency)
+	void ExecuteActualMonthStrategy(DateTime currentDate, decimal currentDayEfficiency)
 	{
 		int freeDays = currentDate.Day - _efficiencyData.LastProcessedDate.Day - 1;
 		_txtFile.WriteRecord(_textGenerator.BuildRecord(currentDayEfficiency, freeDays, false, currentDate));
+
 		UpdateConfig(currentDate.Date, currentDayEfficiency);
 	}
 
-	private void ExecuteNewMonthWithRecordInLastStrategy(DateTime currentDate, decimal currentMonthEfficiency)
+	void ExecuteNewMonthWithRecordInLastStrategy(DateTime currentDate, decimal currentMonthEfficiency)
 	{
 		int freeDaysInLastMonth = DateTime.DaysInMonth(_efficiencyData.LastProcessedDate.Year, _efficiencyData.LastProcessedDate.Month) - _efficiencyData.LastProcessedDate.Day;
 
 		_txtFile.WriteRecord(_textGenerator.BuildWhiteSpaceRecord(freeDaysInLastMonth));
 		ExecuteNewMonthStrategy(currentDate, currentMonthEfficiency);
+
 		UpdateConfig(currentDate.Date, currentMonthEfficiency);
 	}
 
-	private void ExecuteNewMonthStrategy(DateTime currentDate, decimal currentMonthEfficiency)
+	void ExecuteNewMonthStrategy(DateTime currentDate, decimal currentMonthEfficiency)
 	{
 		if (currentDate.Day != 1)
 		{
-			//int freeDaysInNewMonth = currentDate.Day - 1;
 			_txtFile.WriteRecord(_textGenerator.BuildWhiteSpaceInNewMonthLine(currentDate));
 			_txtFile.WriteRecord(_textGenerator.BuildRecord(currentMonthEfficiency, 0, false, currentDate));
 		}
@@ -137,6 +143,7 @@ public class DayEfficiencyManager
 		{
 			_txtFile.WriteRecord(_textGenerator.BuildRecord(currentMonthEfficiency, 0, true, currentDate));
 		}
+
 		UpdateConfig(currentDate.Date, currentMonthEfficiency);
 	}
 
