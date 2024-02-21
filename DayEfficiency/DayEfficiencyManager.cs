@@ -21,7 +21,8 @@ public class DayEfficiencyManager
 
 	public bool IsSourсeFileChanged()
 	{
-		return _efficiencyData.LastProcessedDate.Date != _efficiencyData.LastExcelFileUpdateDate.Date;
+		return _efficiencyData.LastExcelFileUpdateDate.Date != _efficiencyData.CurrentExcelFileUpdateDate.Date
+				&& _efficiencyData.LastExcelFileUpdateDate.TimeOfDay != _efficiencyData.CurrentExcelFileUpdateDate.TimeOfDay;
 	}
 
 	public bool IsItFirstLaunch()
@@ -88,7 +89,9 @@ public class DayEfficiencyManager
 		}
 		else if (_efficiencyData.LastProcessedDate.Month < currentDate.Month)
 		{
-			if (_efficiencyData.LastProcessedDate.Day != DateTime.DaysInMonth(_efficiencyData.LastProcessedDate.Year, _efficiencyData.LastProcessedDate.Month))
+			if (_efficiencyData.LastProcessedDate.Day != DateTime.DaysInMonth(
+				_efficiencyData.LastProcessedDate.Year,
+				_efficiencyData.LastProcessedDate.Month))
 			{
 				return EfficiencyContext.NewMonthWithRecordInLastContext;
 			}
@@ -105,6 +108,7 @@ public class DayEfficiencyManager
 	{
 		_configData.UpdateConfig(ConfigKeys.lastProcessedDate, currentDate.ToString());
 		_configData.UpdateConfig(ConfigKeys.lastCellValue, currentEfficiency.ToString());
+		_configData.UpdateConfig(ConfigKeys.lastSourceFileChanged, _efficiencyData.CurrentExcelFileUpdateDate.ToString());
 	}
 
 	void ExecuteFirstLaunchStrategy(DateTime currentDate, decimal currentMonthEfficiency)

@@ -8,6 +8,7 @@ public class EfficiencyDataGenerator
 	decimal _currentMonthEfficiency = 0;
 	decimal _lastMonthEfficiency = 0;
 	decimal _currentDayEfficiency = 0;
+	DateTime _currentExcelFileUpdateDate;
 	DateTime _lastExcelFileUpdateDate;
 	DateTime _lastProcessedDate;
 	string _cellAddress;
@@ -29,7 +30,7 @@ public class EfficiencyDataGenerator
 		if(_excelFileReader.TryReadFromExcelFile(_sourseExcelFilePath, _cellAddress))
 		{
 			_currentMonthEfficiency = _excelFileReader.CellValue;
-			_lastExcelFileUpdateDate = _excelFileReader.LastUpdateDate;
+			_currentExcelFileUpdateDate = _excelFileReader.CurrentUpdateDate;
 			_currentDayEfficiency = CallculateDayEfficiency();
 			return true;
 		}
@@ -41,7 +42,7 @@ public class EfficiencyDataGenerator
 		_config.ReadConfig();
 
 		_lastMonthEfficiency = _config.LastCellValue;
-		_lastExcelFileUpdateDate = _config.LastProcessedDate;
+		_lastExcelFileUpdateDate = _config.LastSourceFileChanged;
 		_cellAddress = _config.CellAddress;
 		_sourseExcelFilePath = _config.SourceFile;
 		_lastProcessedDate = _config.LastProcessedDate;
@@ -62,9 +63,10 @@ public class EfficiencyDataGenerator
 			LastMonthEfficiency = _lastMonthEfficiency,
 			CurrentDayEfficiency = _currentDayEfficiency,
 			LastProcessedDate = _lastProcessedDate,
-			LastExcelFileUpdateDate = _lastExcelFileUpdateDate,
+			CurrentExcelFileUpdateDate = _currentExcelFileUpdateDate,
 			ProcessedTime = _processedTime,
-			DestinationFilePath = _destinationFilePath
+			DestinationFilePath = _destinationFilePath,
+			LastExcelFileUpdateDate= _lastExcelFileUpdateDate
 		};
 		
 		return data;

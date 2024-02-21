@@ -11,7 +11,7 @@ public class ExcelFileReader
 
     ILogWriter _logWriter;
     public decimal CellValue { get; set; }
-    public DateTime LastUpdateDate { get; set; }
+    public DateTime CurrentUpdateDate { get; set; }
     decimal _cellValue = 0;
     int _cellColumnNumber = 0;
     int _cellRowNumber = 0;
@@ -24,7 +24,7 @@ public class ExcelFileReader
 			var _sourseExcel = new FileInfo(sourceExcelFilePath);
 			if (IsFileFree(_sourseExcel))
 			{
-                LastUpdateDate = _sourseExcel.LastWriteTime;
+                CurrentUpdateDate = _sourseExcel.LastWriteTime;
 				CellValue = GetCellValue(_sourseExcel,  cellAddress);
                 if(CellValue == -1)
                 {

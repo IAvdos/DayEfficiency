@@ -11,16 +11,38 @@ public class DayEfficiencyManagerTests
 	string _testRecordSamples = ".\\..\\..\\..\\TestResources\\TestRecordSamples.txt";
 
 	[Fact]
+	public void ProduceEfficiency_FileIsNotChenged_False()
+	{
+		ClearTestFile();
+
+		var efficiencyData = GetTestEfficiencyData(
+			currentDayEfficiency: 0m,
+			currentExcelFileUpdateDate: new DateTime(2024, 01, 07),
+			lastProcessedDate: new DateTime(2024, 01, 07),
+			currentMonthEfficiency: 45m,
+			lastMonthEfficiency: 33m,
+			lastExcelFileUpdateDate: new DateTime(2024, 01, 07));
+		var efficiencyManager = GetDayEfficiencyManager(efficiencyData);
+
+
+		var isFine = efficiencyManager.IsSourсeFileChanged();
+
+
+		Assert.False(isFine);
+	}
+
+	[Fact]
 	public void ProduceEfficiency_DestinationFileNotExists_False()
 	{
 		string tempPath = _testFile;
 		_testFile = "C:\\feiled file name.txt";
 		var efficiencyData = GetTestEfficiencyData(
 			currentDayEfficiency: 0m,
-			lastExcelFileUpdateDate: new DateTime(2024, 01, 07),
+			currentExcelFileUpdateDate: new DateTime(2024, 01, 07),
 			lastProcessedDate: new DateTime(2024, 01, 07),
 			currentMonthEfficiency: 45m,
-			lastMonthEfficiency: -1m);
+			lastMonthEfficiency: -1m,
+			lastExcelFileUpdateDate: new DateTime(2024, 01, 07));
 		var efficiencyManager = GetDayEfficiencyManager(efficiencyData);
 
 
@@ -38,10 +60,11 @@ public class DayEfficiencyManagerTests
 
 		var efficiencyData = GetTestEfficiencyData(
 			currentDayEfficiency : 0m,
-			lastExcelFileUpdateDate : new DateTime(2024, 01, 07),
+			currentExcelFileUpdateDate : new DateTime(2024, 01, 07),
 			lastProcessedDate : new DateTime(2024, 01, 07),
 			currentMonthEfficiency : 45m,
-			lastMonthEfficiency : -1m);
+			lastMonthEfficiency : -1m,
+			lastExcelFileUpdateDate : new DateTime(2024, 01, 07));
 		var efficiencyManager = GetDayEfficiencyManager(efficiencyData);
 
 
@@ -61,10 +84,11 @@ public class DayEfficiencyManagerTests
 
 		var efficiencyData = GetTestEfficiencyData(
 			currentDayEfficiency : 3.55m,
-			lastExcelFileUpdateDate : new DateTime(2024, 01, 09),
+			currentExcelFileUpdateDate : new DateTime(2024, 01, 09),
 			lastProcessedDate : new DateTime(2024, 01, 08),
 			currentMonthEfficiency : 45m,
-			lastMonthEfficiency : 48.55m);
+			lastMonthEfficiency : 48.55m,
+			lastExcelFileUpdateDate : new DateTime(2024, 01, 08));
 		var efficiencyManager = GetDayEfficiencyManager(efficiencyData);
 
 
@@ -84,10 +108,11 @@ public class DayEfficiencyManagerTests
 
 		var efficiencyData = GetTestEfficiencyData(
 			currentDayEfficiency : 11.22m,
-			lastExcelFileUpdateDate : new DateTime(2024, 01, 13),
+			currentExcelFileUpdateDate : new DateTime(2024, 01, 13),
 			lastProcessedDate : new DateTime(2024, 01, 10),
 			currentMonthEfficiency : 21.22m,
-			lastMonthEfficiency : 11m);
+			lastMonthEfficiency : 11m,
+			lastExcelFileUpdateDate : new DateTime(2024, 01, 10));
 		var efficiencyManager = GetDayEfficiencyManager(efficiencyData);
 
 
@@ -107,10 +132,11 @@ public class DayEfficiencyManagerTests
 
 		var efficiencyData = GetTestEfficiencyData(
 			currentDayEfficiency : 11.22m,
-			lastExcelFileUpdateDate : new DateTime(2024, 02, 01),
+			currentExcelFileUpdateDate : new DateTime(2024, 02, 01),
 			lastProcessedDate : new DateTime(2024, 01, 31),
 			currentMonthEfficiency : 21.22m,
-			lastMonthEfficiency : 11m);
+			lastMonthEfficiency : 11m,
+			lastExcelFileUpdateDate : new DateTime(2024, 01, 31));
 		var efficiencyManager = GetDayEfficiencyManager(efficiencyData);
 
 
@@ -130,10 +156,11 @@ public class DayEfficiencyManagerTests
 
 		var efficiencyData = GetTestEfficiencyData(
 			currentDayEfficiency: 11.22m,
-			lastExcelFileUpdateDate: new DateTime(2024, 02, 01),
+			currentExcelFileUpdateDate: new DateTime(2024, 02, 01),
 			lastProcessedDate: new DateTime(2024, 01, 28),
 			currentMonthEfficiency: 21.22m,
-			lastMonthEfficiency: 11m);
+			lastMonthEfficiency: 11m,
+			lastExcelFileUpdateDate : new DateTime(2024, 01, 27));
 		var efficiencyManager = GetDayEfficiencyManager(efficiencyData);
 
 
@@ -153,20 +180,22 @@ public class DayEfficiencyManagerTests
 	
 	EfficiencyData GetTestEfficiencyData(
 		decimal currentDayEfficiency,
-		DateTime lastExcelFileUpdateDate,
+		DateTime currentExcelFileUpdateDate,
 		DateTime lastProcessedDate,
 		decimal currentMonthEfficiency,
-		decimal lastMonthEfficiency)
+		decimal lastMonthEfficiency,
+		DateTime lastExcelFileUpdateDate)
 	{
 		var efficiencyData = new EfficiencyData()
 		{
 			DestinationFilePath = _testFile,
 			CurrentDayEfficiency = currentDayEfficiency,
-			LastExcelFileUpdateDate = lastExcelFileUpdateDate,
+			CurrentExcelFileUpdateDate = currentExcelFileUpdateDate,
 			LastProcessedDate = lastProcessedDate,
 			CurrentMonthEfficiency = currentMonthEfficiency,
 			LastMonthEfficiency = lastMonthEfficiency,
-			ProcessedTime = new TimeOnly(5, 00)
+			ProcessedTime = new TimeOnly(5, 00),
+			LastExcelFileUpdateDate= lastExcelFileUpdateDate,
 		};
 
 		return efficiencyData;

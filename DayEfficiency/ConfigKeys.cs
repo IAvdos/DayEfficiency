@@ -9,6 +9,7 @@ public static class ConfigKeys
     public const string lastProcessedDate = "last_processed_date";
     public const string processedTime = "processed_time";
     public const string lastCellValue = "last_cell_value";
+    public const string lastSourceFileChanged = "last_source_file_changed";
 }
 
 

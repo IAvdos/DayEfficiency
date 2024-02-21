@@ -16,6 +16,7 @@ public class AppConfigProcessor
     public DateTime LastProcessedDate { get; private set; } = new DateTime(2023, 01, 01, 00, 00, 00);
     public TimeOnly ProcessedTime { get; private set; } = new TimeOnly(05, 00);
     public decimal LastCellValue { get; set; } = -1;
+    public DateTime LastSourceFileChanged { get; private set; } = new DateTime(2023, 01, 01, 00, 00, 00);
 
     public void ReadConfig()
     {
@@ -42,6 +43,9 @@ public class AppConfigProcessor
 
                 case ConfigKeys.lastCellValue:
                     LastCellValue = Decimal.Parse(allConfiguration[key]); break;
+
+                case ConfigKeys.lastSourceFileChanged:
+                    LastSourceFileChanged = DateTime.Parse(allConfiguration[key]); break;
             }
         }
     }
